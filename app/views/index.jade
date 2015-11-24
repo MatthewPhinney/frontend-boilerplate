@@ -1,14 +1,14 @@
 html(ng-app='app', ng-controller='AppController')
   head
     meta(charset='utf-8')
-    title frontendboilerplate
+    title TransactionParser
     meta(name='description', content='')
     meta(property='og:description', content='')
 
     meta(name='apple-mobile-web-app-capable', content='yes')
-    meta(name='apple-mobile-web-app-title', content='frontendboilerplate')
+    meta(name='apple-mobile-web-app-title', content='TransactionParser')
     meta(name='mobile-web-app-capable', content='yes')
-    meta(name='mobile-web-app-title', content='frontendboilerplate')
+    meta(name='mobile-web-app-title', content='TransactionParser')
 
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
 
@@ -20,7 +20,7 @@ html(ng-app='app', ng-controller='AppController')
 
     <!-- build:css(.tmp) /styles/app.css -->
     <!-- inject:css -->
-    link(rel='stylesheet', href='/styles/app.css')
+    link(href='../../.tmp/app.css', rel='stylesheet')
     <!-- endinject -->
     <!-- endbuild -->
 
@@ -31,19 +31,31 @@ html(ng-app='app', ng-controller='AppController')
     base(href='/')
   body
     header
-
     .container
       .page-header
-        h1 Frontend Boilerplate
-        .menu
-          a(ui-sref="main") Home
-          a(ui-sref="about") About
+        div.row.row-header
+          h1 Ripple Transaction Parser
+        div.row.row-content
+          form(role="form", ng-submit='parseTxn()')
+            div.form-group
+              label(for="tx") Paste signed transaction hex here
+              textarea.form-control.txHex(ng-model="txBlob", ng-required="true", rows="6", id="tx")
+            button.btn.btn-success(type="submit") Parse
+            button.btn.btn-cancel(ng-click="reset()") Reset
+          div.panel.panel-primary(ng-cloak, ng-show="txJSON")
+            div.panel-heading
+              h3.panel-title Parsed transaction JSON
+            div.panel-body.txJSON
+              pre
+                code {{txJSON}}
+          div.alert.alert-danger.alert-dismissible(ng-cloak, role="alert", ng-show="parseError")
+            button.close(type="button" data-dismiss="alert" aria-label="Close")
+              span(aria-hidden="true") &times
+            p Invalid transaction
 
-      div(ui-view="guest")
 
-    footer
-      .container
-        p.text-muted Made with love.
+
+      //div(ui-view="guest")
 
     <!-- build:js(.tmp) /scripts/vendor.js -->
     <!-- inject:js -->

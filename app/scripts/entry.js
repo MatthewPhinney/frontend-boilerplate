@@ -11,7 +11,6 @@ angular
   .constant('config', require('../../config.json'));
 
 require('./app.controller');
-require('./about.controller');
 
 appConfig.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider'];
 
@@ -20,14 +19,10 @@ function appConfig ($stateProvider, $urlRouterProvider, $locationProvider) {
     {
       name: 'main',
       path: ''
-    },
-    {
-      name: 'about',
-      path: 'about'
     }
   ];
 
-  routes.forEach(function(route){
+  routes.forEach(function(route) {
     $stateProvider.state(route.name, {
       url: '/' + route.path,
       views: {

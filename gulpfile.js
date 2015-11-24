@@ -71,14 +71,13 @@ gulp.task('html:dist', ['jade:dist'], function() {
     .pipe(gulp.dest(BUILD_DIR))
 });
 
-// Sass
-gulp.task('sass', function () {
-  return $.rubySass('app/styles/app.scss', { sourcemap: true })
-    .on('error', function (err) {
-      console.error('Error!', err.message);
-    })
-    .pipe($.sourcemaps.write())
-    .pipe(gulp.dest(TMP_DIR + 'styles'))
+// Less
+gulp.task('less', function () {
+  return gulp.src('app/styles/app.less')
+    .pipe($.less({
+      paths: ['src/less']
+    }))
+    .pipe(gulp.dest(TMP_DIR))
     .pipe($.browserSync.reload({stream:true}));
 });
 
@@ -131,7 +130,7 @@ gulp.task('protractor', ['webdriver-update'], function () {
       args: ['--baseUrl', 'http://localhost:3000']
     }))
     .on('error', function (e) {
-      throw e
+      throw e;
     });
 });
 
@@ -141,7 +140,7 @@ gulp.task('clean', function () {
 });
 
 // Development
-gulp.task('dev', ['clean', 'webpack', 'webpack:vendor', 'sass', 'html:dev']);
+gulp.task('dev', ['clean', 'webpack', 'webpack:vendor', 'less', 'html:dev']);
 
 // Default Task (Dev environment)
 gulp.task('default', ['serve:dev'], function() {
@@ -158,7 +157,7 @@ gulp.task('default', ['serve:dev'], function() {
   gulp.watch(TMP_DIR + 'views/**/*.html', ['html:dev']);
 
   // Styles
-  gulp.watch('app/styles/**/*.scss', ['sass']);
+  gulp.watch('app/styles/**/*.less', ['less']);
 });
 
 gulp.task('deps', ['html:dist'], function () {
